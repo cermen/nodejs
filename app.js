@@ -1,6 +1,9 @@
 const express = require('express');
+const connect = require("./schemas");
 const app = express();
 const port = 4000;
+
+connect();
 
 const blogRouter = require("./routes/blog");
 
