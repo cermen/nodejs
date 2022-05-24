@@ -7,6 +7,8 @@ connect();
 
 const blogRouter = require("./routes/blog");
 
+app.use(express.json());
+
 app.use("/api", [blogRouter]);
 
 app.get('/', (req, res) => {

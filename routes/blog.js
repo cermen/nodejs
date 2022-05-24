@@ -1,12 +1,25 @@
 const express = require('express');
-const res = require('express/lib/response');
+const Article = require('../schemas/article')
 const router = express.Router();
 
-router.get('/article', (req, res) => {
-    res.send('게시글 목록이 들어갈 페이지입니다.');
+// 게시글 조회
+router.get('/article', async (req, res) => {
+    const articles = await Article.find();
+
+    res.json({ articles: articles });
 });
 
-router.get("/article/:articleId", (req, res) => {
+// 게시글 작성
+router.post('/article', async (req, res) => {
+    const { articleId, title, author, date, content, password } = req.body;
+    
+    const createdArticle = await Article.create({ articleId, title, author, date, content, password });
+    res.json({ article: createdArticle });
+
+})
+
+// 게시글 상세 조회
+router.get('/article/:articleId', (req, res) => {
     const id = req.params.articleId;
     const [detail] = articles.filter(item => item.id === Number(id));
     res.json({ detail });
