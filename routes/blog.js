@@ -23,4 +23,28 @@ router.get('/article/:articleId', async (req, res) => {
     res.json({ detail });
 })
 
+// 게시글 수정
+router.put('/article/:articleId', async (req, res) => {
+    const { articleId, title, content } = req.body;
+
+    const article = await Article.find({ articleId: Number(articleId) });
+    if (article.length) {
+        await Article.updateOne({ articleId: Number(articleId) }, { $set: { title, content } });
+    }
+
+    res.json({ success: true });
+})
+
+// 게시글 삭제
+router.delete("/article/:articleId", async (req, res) => {
+    const { articleId } = req.body;
+  
+    const article = await Article.find({ articleId });
+    if (article.length) {
+        await Article.deleteOne({ articleId });
+    }
+  
+    res.json({ result: "success" });
+});
+
 module.exports = router;
