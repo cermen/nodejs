@@ -19,9 +19,11 @@ router.post('/article', async (req, res) => {
 })
 
 // 게시글 상세 조회
-router.get('/article/:articleId', (req, res) => {
+router.get('/article/:articleId', async (req, res) => {
     const id = req.params.articleId;
-    const [detail] = articles.filter(item => item.id === Number(id));
+    const detail = await Article.findOne({ articleId: id });
+
+    console.log(detail);
     res.json({ detail });
 })
 
