@@ -4,7 +4,7 @@ const router = express.Router();
 
 // 게시글 조회
 router.get('/article', async (req, res) => {
-    const articles = await Article.find();
+    const articles = await Article.find().sort({"date": -1});
     res.json({ articles: articles });
 });
 
@@ -25,10 +25,11 @@ router.get('/article/:articleId', async (req, res) => {
 
 // 게시글 수정
 router.put('/article/:articleId', async (req, res) => {
-    const { articleId, title, content } = req.body;
+    const { articleId, title, content, password } = req.body;
 
     const article = await Article.find({ articleId: Number(articleId) });
-    if (article.length) {
+    const pwd = article[0].password;
+    if (article.length && (password === pwd)) {
         await Article.updateOne({ articleId: Number(articleId) }, { $set: { title, content } });
     }
 
@@ -37,10 +38,11 @@ router.put('/article/:articleId', async (req, res) => {
 
 // 게시글 삭제
 router.delete("/article/:articleId", async (req, res) => {
-    const { articleId } = req.body;
-  
-    const article = await Article.find({ articleId });
-    if (article.length) {
+    const { articleId, password } = req.body;
+
+    const article = await Article.find({ articleId: Number(articleId) });
+    const pwd = article[0].password;
+    if (article.length && (password === pwd)) {
         await Article.deleteOne({ articleId });
     }
   
