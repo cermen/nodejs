@@ -50,7 +50,4 @@ router.delete("/article/:articleId", async (req, res) => {
     res.json({ result: "success" });
 });
 
-// 회원가입
-
-
 module.exports = router;

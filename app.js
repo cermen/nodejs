@@ -6,10 +6,11 @@ const port = 4000;
 connect();
 
 const blogRouter = require("./routes/blog");
+const userRouter = require("./routes/users");
 
 app.use(express.json());
 
-app.use("/api", [blogRouter]);
+app.use("/api", [blogRouter, userRouter]);
 
 app.get('/', (req, res) => {
 	res.send('<h1>Hello World!</h1>');
