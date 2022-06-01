@@ -57,4 +57,20 @@ router.post("/users", async (req, res) => {
     res.status(201).send({})
 });
 
+// 로그인
+router.post("/login", async (req, res) => {
+    const { nickname, password } = req.body;
+
+    const user = await User.findOne({ nickname, password }).exec();
+
+    if (!user) {
+        res.status(400).send({
+            errorMessage: "닉네임 또는 비밀번호를 확인해주세요",
+        });
+    }
+
+    const token = jwt.sign({ userId: user.userId }, "my-secret-key");
+    res.send({ token });
+})
+
 module.exports = router;
