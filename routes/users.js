@@ -54,7 +54,7 @@ router.post("/users", async (req, res) => {
     const user = new User({ nickname, password });
     await user.save();
 
-    res.status(201).send({})
+    res.status(201).send({ user });
 });
 
 // 로그인
@@ -69,8 +69,18 @@ router.post("/login", async (req, res) => {
         });
     }
 
+    console.log(user.userId);
     const token = jwt.sign({ userId: user.userId }, "my-secret-key");
     res.send({ token });
 })
+
+// 사용자 인증
+router.get("/users/auth", authMiddleWare, async (req, res) => {
+    const { user } = res.locals;
+
+    res.send({
+        user,
+    });
+});
 
 module.exports = router;
