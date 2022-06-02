@@ -67,6 +67,7 @@ router.post("/login", async (req, res) => {
         res.status(400).send({
             errorMessage: "닉네임 또는 비밀번호를 확인해주세요",
         });
+        return;
     }
 
     console.log(user.userId);
