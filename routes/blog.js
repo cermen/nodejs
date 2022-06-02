@@ -1,5 +1,6 @@
 const express = require('express');
-const Article = require('../schemas/article')
+const Article = require('../schemas/article');
+const Comment = require('../schemas/comment');
 const router = express.Router();
 
 // 게시글 조회
@@ -49,5 +50,12 @@ router.delete("/article/:articleId", async (req, res) => {
   
     res.json({ result: "success" });
 });
+
+// 댓글 조회
+router.get("/article/:articleId/comments", async (req, res) => {
+    const id = req.params.articleId;
+    const comments = await Comment.find({ articleId: Number(id) }).sort({"date": -1});
+    res.json({ comments: comments });
+})
 
 module.exports = router;
