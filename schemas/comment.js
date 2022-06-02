@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-    articleId: {
+    commentId: {
         type: Number,
         required: true,
         unique: true
-    }, 
-    content: {
+    },
+    author: {
         type: String,
         required: true
     },
     date: {
         type: Date,
         required: true,
+    },
+    content: {
+        type: String,
+        required: true
     },
 });
 
