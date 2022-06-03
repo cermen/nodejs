@@ -1,23 +1,10 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-    articleId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
-    author: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        required: true,
-    },
-    content: {
-        type: String,
-        required: true
-    },
+    articleId: Number,
+    author: String,
+    date: Date,
+    content: String,
 });
 
 commentSchema.virtual("commentId").get(function () {
