@@ -83,9 +83,9 @@ router.put('/article/:articleId/comments/:commentId', authMiddleWare, async (req
     const commentId = req.params.commentId;
     const { content } = req.body;
 
-    const comment = await Comment.find({ commentId });
-    if (comment[0].author === user) {
-        await comment.updateOne({ commentId }, {$set: { content }});
+    const comment = await Comment.find({ commentId: Number(commentId) });
+    if (comment[0].author === user.nickname) {
+        await Comment.updateOne({ commentId: Number(commentId) }, {$set: { content }});
     }
 
     res.json({ success: true });
