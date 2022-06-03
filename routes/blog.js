@@ -64,15 +64,31 @@ router.post("/article/:articleId/comments", authMiddleWare, async (req, res) => 
     const user = res.locals.user;
     const articleId = req.params.articleId;
 
-    const { content, date } = req.body;
+    const { commentId, date, content } = req.body;
     if (!content) {     // 댓글 내용이 없을 경우
         res.status(400).send({
             errorMessage: "댓글 내용을 입력해주세요."
         })
         return;
     }
-    const comment = await Comment.create({ articleId, author: user.nickname, date, content });
+    const comment = await Comment.create({ commentId, articleId, author: user.nickname, date, content });
     res.json({ comment: comment });
 });
+
+// 댓글 수정
+router.put('/article/:articleId/comments/:commentId', authMiddleWare, async (req, res) => {
+    const user = res.locals.user;
+    
+    const articleId = req.params.articleId;
+    const commentId = req.params.commentId;
+    const { content } = req.body;
+
+    const comment = await Comment.find({ commentId });
+    if (comment[0].author === user) {
+        await comment.updateOne({ commentId }, {$set: { content }});
+    }
+
+    res.json({ success: true });
+})
 
 module.exports = router;
