@@ -1,6 +1,7 @@
 const express = require('express');
 const Article = require('../schemas/article');
 const Comment = require('../schemas/comment');
+const authMiddleWare = require("../middlewares/auth");
 const router = express.Router();
 
 // 게시글 조회
@@ -56,6 +57,28 @@ router.get("/article/:articleId/comments", async (req, res) => {
     const id = req.params.articleId;
     const comments = await Comment.find({ articleId: Number(id) }).sort({"date": -1});
     res.json({ comments: comments });
-})
+});
+
+// 댓글 작성
+router.post("/article/:articleId/comments", authMiddleWare, async (req, res) => {
+    const user = res.locals.user;
+
+    // if (!user) {        // 로그인하지 않았을 경우
+    //     res.status(400).send({
+    //         errorMessage: "로그인이 필요한 기능입니다."
+    //     })
+    //     return;
+    // }
+
+    const { commentId, content, date } = req.body;
+    if (!content) {     // 댓글 내용이 없을 경우
+        res.status(400).send({
+            errorMessage: "댓글 내용을 입력해주세요."
+        })
+        return;
+    }
+    const comment = await Comment.create({ commentId, author: user.nickname, date, content });
+    res.json({ comment: comment });
+});
 
 module.exports = router;
