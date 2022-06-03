@@ -79,7 +79,6 @@ router.post("/article/:articleId/comments", authMiddleWare, async (req, res) => 
 router.put('/article/:articleId/comments/:commentId', authMiddleWare, async (req, res) => {
     const user = res.locals.user;
     
-    const articleId = req.params.articleId;
     const commentId = req.params.commentId;
     const { content } = req.body;
 
@@ -89,6 +88,20 @@ router.put('/article/:articleId/comments/:commentId', authMiddleWare, async (req
     }
 
     res.json({ success: true });
-})
+});
+
+// 댓글 삭제
+router.delete('/article/:articleId/comments/:commentId', authMiddleWare, async (req, res) => {
+    const user = res.locals.user;
+    
+    const commentId = req.params.commentId;
+
+    const comment = await Comment.find({ commentId: Number(commentId) });
+    if (comment[0].author === user.nickname) {
+        await Comment.deleteOne({ commentId: Number(commentId) });
+    }
+  
+    res.json({ result: "success" });
+});
 
 module.exports = router;
