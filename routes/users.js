@@ -70,7 +70,6 @@ router.post("/login", async (req, res) => {
         return;
     }
 
-    console.log(user.userId);
     const token = jwt.sign({ userId: user.userId }, "my-secret-key");
     res.send({ token });
 })
