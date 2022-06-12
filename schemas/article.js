@@ -14,10 +14,6 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    date: {
-        type: Date,
-        required: true,
-    },
     content: {
         type: String,
     },
@@ -25,6 +21,7 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-});
+}, { timestamps: true }
+);
 
 module.exports = mongoose.model("Article", articleSchema);

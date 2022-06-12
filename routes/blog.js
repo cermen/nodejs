@@ -12,8 +12,8 @@ router.get('/article', async (req, res) => {
 
 // 게시글 작성
 router.post('/article', async (req, res) => {
-    const { articleId, title, author, date, content, password } = req.body;
-    const createdArticle = await Article.create({ articleId, title, author, date, content, password });
+    const { articleId, title, author, content, password } = req.body;
+    const createdArticle = await Article.create({ articleId, title, author, content, password });
     res.json({ article: createdArticle });
 })
 
@@ -64,14 +64,14 @@ router.post("/article/:articleId/comments", authMiddleWare, async (req, res) => 
     const user = res.locals.user;
     const articleId = req.params.articleId;
 
-    const { commentId, date, content } = req.body;
+    const { commentId, content } = req.body;
     if (!content) {     // 댓글 내용이 없을 경우
         res.status(400).send({
             errorMessage: "댓글 내용을 입력해주세요."
         })
         return;
     }
-    const comment = await Comment.create({ commentId, articleId, author: user.nickname, date, content });
+    const comment = await Comment.create({ commentId, articleId, author: user.nickname, content });
     res.json({ comment: comment });
 });
 
